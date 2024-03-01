@@ -1,0 +1,175 @@
+\documentclass[answers]{exam}
+
+% BASE TAKEN FROM ICCS315 SCRIBE NOTES
+
+% --- SETUP STUFF ---
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+\usepackage{url}
+\usepackage[unicode]{hyperref}
+
+\setcounter{secnumdepth}{2}
+
+\usepackage{titlesec,blindtext,color}
+
+% --- MATH STUFF ---
+\usepackage{amsthm, amsmath, amssymb}
+\usepackage{mathtools,xspace}
+\usepackage{nicefrac}
+
+\usepackage{bbm}
+\usepackage{dsfont}
+\usepackage{cancel}
+
+\usepackage{blkarray}
+\newcommand{\matindex}[1]{\mbox{\scriptsize#1}} % Matrix index
+
+% --- FONT STUFF ---
+% Has to be under math stuff for some reason :/
+\usepackage{newpxtext, newpxmath}
+\usepackage[T1]{fontenc}
+
+% --- DIAGRAM STUFF ---
+\usepackage{tikz,pgfplots,xcolor,graphicx}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage[breakable,skins]{tcolorbox}
+\usepackage{framed}
+\usepackage{mdframed}
+\usepackage{float}
+
+\pgfplotsset{compat=1.18}
+
+% --- THEOREM STUFF ---
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
+
+\usepackage{algorithm}
+\usepackage[indLines=true]{algpseudocodex}
+\usepackage{algorithmicx}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\Input{\item[\algorithmicinput]}
+\algrenewcommand\algorithmicoutput{\textbf{Output:}}
+\algrenewcommand\Output{\item[\algorithmicoutput]}
+\algrenewcommand\algorithmicrequire{\textbf{Require:}}
+\algrenewcommand\Require{\item[\algorithmicrequire]}
+
+% --- CODE STUFF ---
+\usepackage{minted}
+\usemintedstyle{tango}
+% from Stochastic Processes
+\renewcommand{\Pr}[1]{\mathbf{Pr}\left[#1\right]}
+\newcommand{\CPr}[2]{\mathbf{Pr}\left[#1\ |\ #2\right]}
+\newcommand{\Ex}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\ExSub}[2]{\mathbb{E}_#2\left[#1\right]}
+\newcommand{\CEx}[2]{\mathbb{E}\left[#1\ |\ #2\right]}
+
+\newcommand{\Exp}[1]{\text{Exp}\left(#1\right)}
+\newcommand{\Pois}[1]{\text{Poisson}\left(#1\right)}
+\newcommand{\DGamma}[2]{\text{Gamma}\left(#1, #2\right)}
+
+% from Graph Theory
+\DeclareMathOperator{\diam}{diam}
+
+% misc. ones
+\newenvironment{nexample}{
+  \begin{leftbar}
+    \noindent\textbf{Example.}
+}{
+  \end{leftbar}
+}
+
+\newenvironment{distraction}{
+    \begin{tcolorbox}[title=Distraction!,breakable,colframe=red!69!black,before upper={\parindent15pt}]
+}{
+    \end{tcolorbox}
+}
+
+\newenvironment{hwproblem}[1]{\noindent\textbf{Problem #1.}}{}
+\newmdenv[linewidth=0.5pt,linecolor=black,backgroundcolor=white]{singleframed}
+\newenvironment*{singleframedindent}{
+  \begin{singleframed}
+    \setlength{\parindent}{\defparindent}\ignorespaces
+  }{
+  \end{singleframed}
+}
+
+\newcommand\sol[1]{
+  \begin{singleframedindent}
+    #1
+  \end{singleframedindent}
+}
+
+
+
+\renewcommand{\questionlabel}{\textbf{Problem \thequestion.}}
+\renewcommand{\solutiontitle}{}
+
+\title{\Huge{Title}
+	\\
+\Large\scshape{Subject Name}}
+\author{Author}
+\date{\today}
+
+\begin{document}
+
+\section{Chapter 2}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{2.2}
+
+1)On which time steps did this definitely occur?\\
+t=1 
+
+t=4
+
+
+2)On which time steps could this possibly have occurred?\\
+t=2
+
+t=5
+because the optimal is action=2.
+
+3)optimal selection\\
+
+t=3 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{2.3}
+The epsilon=0.01 because the probability is $\frac{\sum 1_{A_{i}=a}}{N}\to \frac{\epsilon}{k}+1-\epsilon$. If we have epsilon=0, we get stuck in the case of $Q_1(a)=0$ to $A_{1}=0$.
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{}
+
+
+
+\end{document}
+
+
