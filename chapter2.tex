@@ -82,11 +82,13 @@
 \usepackage{minted}
 \usemintedstyle{tango}
 % from Stochastic Processes
-\renewcommand{\Pr}[1]{\mathbf{Pr}\left[#1\right]}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Proba}[1]{\mathbb{P}\left[#1\right]}
 \newcommand{\CPr}[2]{\mathbf{Pr}\left[#1\ |\ #2\right]}
-\newcommand{\Ex}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\Ex}{\mathbb{E}}
 \newcommand{\ExSub}[2]{\mathbb{E}_#2\left[#1\right]}
 \newcommand{\CEx}[2]{\mathbb{E}\left[#1\ |\ #2\right]}
+\newcommand{\Expe}[1]{\mathbb{E}\left[ #1\right] }
 
 \newcommand{\Exp}[1]{\text{Exp}\left(#1\right)}
 \newcommand{\Pois}[1]{\text{Poisson}\left(#1\right)}
@@ -129,7 +131,7 @@
 \renewcommand{\questionlabel}{\textbf{Problem \thequestion.}}
 \renewcommand{\solutiontitle}{}
 
-\newcommand{\e}{\epsilon}
+\newcommand{\e}{\varepsilon}
 \newcommand{\tor}{\text{ or }}
 
 \begin{document}
@@ -146,7 +148,7 @@ the probability that the greedy action is selected?
 \begin{solution}
 Write $G:=\{\text{greedy action is selected}\}$. We have
 \begin{align*}
-Prob(\text{ G })=&Prob(\text{ G },random)+Prob(\text{ G },optimal)    \\
+\Proba{\text{ G }}=&\Proba{\text{ G },random}+\Proba{\text{ G },optimal}    \\
 &=\epsilon+(1-\epsilon)\frac{1}{2}\\
 &=0.75.
 \end{align*}  
@@ -182,15 +184,15 @@ t=5&-1&1/3&0&0&3&end\\
 \end{tabularx}
 
 \begin{enumerate}
-    \item step $t=1$ can be either exploration or exploitation because the optimal value is zero for all actions.
+    \item action $A_{1}=1$ can be either exploration or exploitation because the optimal value is zero for all actions.
 
-    \item step $t=2$, could be either exploration or exploitation because action=2 is optimal too.
+    \item action $A_{2}=2$ could be either exploration or exploitation because action=2 is optimal too.
 
-    \item step $t=3$, is exploitation because the only optimal action was 2.
+    \item action $A_{3}=2$ could be either exploration or exploitation because action=2 is optimal too.
 
-\item step $t=4$, is exploration because the action 2 is not optimal.
+\item action $A_{4}=2$ is exploration because the action 2 is not optimal.
 
-\item step $t=5$, is exploitation because action=$3$ is optimal.
+\item action $A_{5}=4$ is exploitation because action=$3$ is the only optimal choice.
     
 \end{enumerate}
 
@@ -202,30 +204,53 @@ t=5&-1&1/3&0&0&3&end\\
 \end{solution}
 
 
-1)On which time steps did this definitely occur?\\
-t=1 
-
-t=4
-
-
-2)On which time steps could this possibly have occurred?\\
-t=2
-
-t=5
-because the optimal is action=2.
-
-3)optimal selection\\
-
-t=3 
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{2.3}
-The epsilon=0.01 because the probability is $\frac{\sum 1_{A_{i}=a}}{N}\to \frac{\epsilon}{k}+1-\epsilon$. If we have epsilon=0, we get stuck in the case of $Q_1(a)=0$ to $A_{1}=0$.
+\begin{exercise}
+In the comparison shown in Figure 2.2, which method will perform best in the
+long run in terms of cumulative reward and probability of selecting the best
+action? How much better will it be? Express your answer quantitatively    
+\end{exercise}
+
+\begin{solution}
+    
+\textbf{ cumulative reward}
+We have for optimal action $a_{*}$
+\begin{equation}
+\Expe{R_{i}|A_{i}=a_{*}}=q_{*}(a_{*}).    
+\end{equation}
+The probability of choosing the optimal action among n-options is
+\begin{equation}
+\Proba{A_{i}=a_{*}}=(1-\e)+\frac{\e}{n},
+\end{equation}
+and $\Proba{exploration}=1- \Proba{A_{i}=a_{*}}$. The true value $q_{*}(a)$ each of the ten actions $a=1,...,10$ was selected according to a normal distribution with mean zero and unit variance and so
+\begin{equation}
+\Expe{\Expe{R_{i}|exploration}}=\Expe{\sum_{action~a}\Expe{R_{i}|A_{i}=a}} =\sum_{action~a}\Expe{q_{*}(a)}=\sum_{action~a}0=0.   
+\end{equation}
+So the cumulative reward is from the law of total expectation
+\begin{align*}
+\Expe{R_{i}}=&\Expe{R_{i}|A_{i}=a_{*}}\Proba{A_{i}=a_{*}}+\Expe{R_{i}|exploration}\Proba{exploration}\\    
+=&q_{*}(a_{*})((1-\e)+\frac{\e}{n})+\Expe{R_{i}|exploration}(\e-\frac{\e}{n})\\    
+\end{align*}
+\textbf{probability of selecting the best action}
+Write $G:=\{\text{greedy action is selected}\}$. We have for $\e=0.01$
+\begin{align*}
+\Prob_{0.01}(\text{ G })=&\Prob(\text{ G },random)+\Prob(\text{ G },optimal)    \\
+&=\epsilon+(1-\epsilon)\frac{1}{k}\\
+&=0.01+0.99\frac{1}{10}=0.991
+\end{align*}  
+and similarly for $\e=0.1$
+\begin{align*}
+Prob_{0.1}(\text{ G })=&Prob(\text{ G },random)+Prob(\text{ G },optimal)    \\
+&=\epsilon+(1-\epsilon)\frac{1}{k}\\
+&=0.1+0.9\frac{1}{10}=0.91
+\end{align*}  
+So we see that the first probability is slightly higher than the second one.
 
 
 
+\end{solution}
 
 
 
