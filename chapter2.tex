@@ -130,6 +130,7 @@
 \renewcommand{\solutiontitle}{}
 
 \newcommand{\e}{\epsilon}
+\newcommand{\tor}{\text{ or }}
 
 \begin{document}
 
@@ -143,37 +144,59 @@ In "$\epsilon$-greedy action selection, for the case of two actions and " $\epsi
 the probability that the greedy action is selected?
 \end{exercise}
 \begin{solution}
-We have
+Write $G:=\{\text{greedy action is selected}\}$. We have
 \begin{align*}
-Prob(\text{  greedy action is selected })=&Prob(\text{  greedy action is selected },random)+Prob(\text{  greedy action is selected },optimal)    \\
+Prob(\text{ G })=&Prob(\text{ G },random)+Prob(\text{ G },optimal)    \\
 &=\epsilon+(1-\epsilon)\frac{1}{2}\\
 &=0.75.
-\end{align*}
+\end{align*}  
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{2.2}
-
 \begin{exercise}
-Bandit example Consider a $k$-armed bandit problem with $k = 4$ actions, denoted $1, 2, 3$, and $4$. Consider applying to this problem a bandit algorithm using $\e$-greedy action selection, sample-average action-value estimates, and initial estimates of $Q_1(a) = 0$, for all $a$. Suppose the initial sequence of actions and rewards is $A1 = 1, R1 = 1, A2 = 2, R2 = 1, A3 = 2, R3 = 2, A4 = 2, R4 = 2, A5 = 3, R5 = 0.$ On some of these time steps the $\e$ case may have occurred, causing an action to be selected at random. On which time steps did this definitely occur? On which time steps could this possibly have occurred?
+Bandit example Consider a $k$-armed bandit problem with $k = 4$ actions, denoted $1, 2, 3$, and $4$. Consider applying to this problem a bandit algorithm using $\e$-greedy action selection, sample-average action-value estimates, and initial estimates of $Q_1(a) = 0$, for all $a$. Suppose the initial sequence of actions and rewards is $A1 = 1, R1 = -1, A2 = 2, R2 = 1, A3 = 2, R3 = -2, A4 = 2, R4 = 2, A5 = 3, R5 = 0.$ On some of these time steps the $\e$ case may have occurred, causing an action to be selected at random. On which time steps did this definitely occur? On which time steps could this possibly have occurred?
 \end{exercise}
 \begin{solution}
 
+
+We denote the sample average action value after n-steps as
+\begin{equation}
+\Large{Q_t}(a) = \frac{{\sum\limits_{i = 1}^{t - 1} {{R_i}{1_{{A_i} = a}}} }}{{\sum\limits_{i = 1}^{t - 1} {{1_{{A_i} = a}}} }}.
+\end{equation}
+
 \begin{tabularx}{\linewidth}{ccccccc}
-Timestep $t$ & $Q_{t}(1)$ & $Q_{t}(1)$    & $Q_{t}(1)$  & $Q_{t}(1)$ & Greedy action & Action selected\\
+Timestep $t$ & $Q_{t+1}(1)$ & $Q_{t+1}(2)$    & $Q_{t+1}(3)$  & $Q_{t+1}(4)$ & Greedy action & Action selected\\
 \hline 
-t=0&0&0&0&0&-&$A_{1}$\\
+t=0&0&0&0&0&-&$A_{1}=1$\\
 \hline 
-t=1&&&&&&$A_{2}$\\
+t=1&$\frac{R_{1}}{1_{{A_1} = 1}}=-1$  & 0 &0&0&$2,3\tor 4$&$A_{2}=2$\\
 \hline 
-t=2&&&&&&$A_{2}$\\
+t=2& $-1$ &1&0&0&2&$A_{3}=2$\\
 \hline 
-t=3&&&&&&$A_{2}$\\
+t=3& -1& $\frac{R_{2}+R_{3}}{2}=-0.5$ &0&0&3\tor 4&$A_{4}=2$\\
 \hline 
-t=4&&&&&&$A_{5}$\\
+t=4& -1 &$\frac{R_{2}+R_{3}+R_{4}}{3}=\frac{1}{3}$&0  &0&3&$A_{5}=3$\\
 \hline 
-t=5&&&&&&end\\
+t=5&-1&1/3&0&0&3&end\\
+\hline
 \end{tabularx}
+
+\begin{enumerate}
+    \item step $t=1$ can be either exploration or exploitation because the optimal value is zero for all actions.
+
+    \item step $t=2$, could be either exploration or exploitation because action=2 is optimal too.
+
+    \item step $t=3$, is exploitation because the only optimal action was 2.
+
+\item step $t=4$, is exploration because the action 2 is not optimal.
+
+\item step $t=5$, is exploitation because action=$3$ is optimal.
+    
+\end{enumerate}
+
+
+
+
 
 
 \end{solution}
