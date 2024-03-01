@@ -242,14 +242,14 @@ We have
 Write $G:=\{\text{greedy action is selected}\}$. We have for $\e=0.01$
 \begin{align*}
 \Prob_{0.01}(\text{ G })=&\Prob(\text{ G },random)+\Prob(\text{ G },optimal)    \\
-&=\epsilon+(1-\epsilon)\frac{1}{k}\\
-&=0.01+0.99\frac{1}{10}=0.991
+&=\epsilon\frac{1}{k}+(1-\epsilon)\\
+&=0.01\frac{1}{10}+0.99=0.991
 \end{align*}  
 and similarly for $\e=0.1$
 \begin{align*}
 Prob_{0.1}(\text{ G })=&Prob(\text{ G },random)+Prob(\text{ G },optimal)    \\
-&=\epsilon+(1-\epsilon)\frac{1}{k}\\
-&=0.1+0.9\frac{1}{10}=0.91
+&=\epsilon\frac{1}{k}+(1-\epsilon)\\
+&=0.1\frac{1}{10}+0.9=0.91
 \end{align*}  
 So we see that the first probability is slightly higher than the second one.
 
