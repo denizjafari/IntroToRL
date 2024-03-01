@@ -213,10 +213,7 @@ long run in terms of cumulative reward and probability of selecting the best
 action? How much better will it be? Express your answer quantitatively    
 \end{exercise}
 
-\begin{solution}
-    
-\textbf{ cumulative reward}
-We have for optimal action $a_{*}$
+\begin{solution}\textbf{ cumulative reward} We have for optimal action $a_{*}$
 \begin{equation}
 \Expe{R_{i}|A_{i}=a_{*}}=q_{*}(a_{*}).    
 \end{equation}
@@ -230,8 +227,8 @@ and $\Proba{exploration}=1- \Proba{A_{i}=a_{*}}$. The true value $q_{*}(a)$ each
 \end{equation}
 So the cumulative reward is from the law of total expectation
 \begin{align*}
-\Expe{R_{i}}=&\Expe{R_{i}|A_{i}=a_{*}}\Proba{A_{i}=a_{*}}+\Expe{R_{i}|exploration}\Proba{exploration}\\    
-=&q_{*}(a_{*})((1-\e)+\frac{\e}{n})+\Expe{R_{i}|exploration}(\e-\frac{\e}{n})\\   
+\Expe{R_{i}}=&\Expe{\Expe{R_{i}|A_{i}=a_{*}}}\Proba{A_{i}=a_{*}}+\Expe{\Expe{R_{i}|exploration}}\Proba{exploration}\\    
+=&q_{*}(a_{*})((1-\e)+\frac{\e}{n})+0(\e-\frac{\e}{n})\\   
 =&q_{*}(a_{*})((1-\e)+\frac{\e}{n}).
 \end{align*}
 We have
