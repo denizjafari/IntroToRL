@@ -1,4 +1,9 @@
 \documentclass[answers]{exam}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{seqsplit}
 
 % BASE TAKEN FROM ICCS315 SCRIBE NOTES
 
@@ -124,11 +129,7 @@
 \renewcommand{\questionlabel}{\textbf{Problem \thequestion.}}
 \renewcommand{\solutiontitle}{}
 
-\title{\Huge{Title}
-	\\
-\Large\scshape{Subject Name}}
-\author{Author}
-\date{\today}
+\newcommand{\e}{\epsilon}
 
 \begin{document}
 
@@ -142,12 +143,40 @@ In "$\epsilon$-greedy action selection, for the case of two actions and " $\epsi
 the probability that the greedy action is selected?
 \end{exercise}
 \begin{solution}
-It is simply $1-\epsilon= 0.5$.
+We have
+\begin{align*}
+Prob(\text{  greedy action is selected })=&Prob(\text{  greedy action is selected },random)+Prob(\text{  greedy action is selected },optimal)    \\
+&=\epsilon+(1-\epsilon)\frac{1}{2}\\
+&=0.75.
+\end{align*}
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{2.2}
 
+\begin{exercise}
+Bandit example Consider a $k$-armed bandit problem with $k = 4$ actions, denoted $1, 2, 3$, and $4$. Consider applying to this problem a bandit algorithm using $\e$-greedy action selection, sample-average action-value estimates, and initial estimates of $Q_1(a) = 0$, for all $a$. Suppose the initial sequence of actions and rewards is $A1 = 1, R1 = 1, A2 = 2, R2 = 1, A3 = 2, R3 = 2, A4 = 2, R4 = 2, A5 = 3, R5 = 0.$ On some of these time steps the $\e$ case may have occurred, causing an action to be selected at random. On which time steps did this definitely occur? On which time steps could this possibly have occurred?
+\end{exercise}
+\begin{solution}
+
+\begin{tabularx}{\linewidth}{ccccccc}
+Timestep $t$ & $Q_{t}(1)$ & $Q_{t}(1)$    & $Q_{t}(1)$  & $Q_{t}(1)$ & Greedy action & Action selected\\
+\hline 
+t=0&0&0&0&0&-&$A_{1}$\\
+\hline 
+t=1&&&&&&$A_{2}$\\
+\hline 
+t=2&&&&&&$A_{2}$\\
+\hline 
+t=3&&&&&&$A_{2}$\\
+\hline 
+t=4&&&&&&$A_{5}$\\
+\hline 
+t=5&&&&&&end\\
+\end{tabularx}
+
+
+\end{solution}
 
 
 1)On which time steps did this definitely occur?\\
