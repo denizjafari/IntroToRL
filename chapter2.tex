@@ -4,6 +4,7 @@
 \usepackage{multirow}
 \usepackage{longtable}
 \usepackage{seqsplit}
+\usepackage{graphics}
 
 % BASE TAKEN FROM ICCS315 SCRIBE NOTES
 
@@ -18,6 +19,7 @@
 \setcounter{secnumdepth}{2}
 
 \usepackage{titlesec,blindtext,color}
+\usepackage{adjustbox}
 
 % --- MATH STUFF ---
 \usepackage{amsthm, amsmath, amssymb}
@@ -58,6 +60,9 @@
 \newtheorem{corollary}[theorem]{Corollary}
 
 \newtheorem{exercise}[theorem]{Exercise}
+
+\newcommand{\tom}[1]{{\color{blue} #1}}
+\newcommand{\deniz}[1]{{\color{blue} #1}}
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
@@ -127,12 +132,15 @@
 }
 
 
+\newenvironment{eqalign}{\begin{equation}\begin{aligned}}{\end{aligned}\end{equation}}
 
 \renewcommand{\questionlabel}{\textbf{Problem \thequestion.}}
 \renewcommand{\solutiontitle}{}
 
 \newcommand{\e}{\varepsilon}
 \newcommand{\tor}{\text{ or }}
+\newcommand{\tand}{\text{ and }}
+\newcommand{\tfor}{\text{ for }}
 
 \begin{document}
 
@@ -142,14 +150,14 @@
 
 
 \begin{exercise}
-In "$\epsilon$-greedy action selection, for the case of two actions and " $\epsilon= 0.5$, what is
+In "$\e$-greedy action selection, for the case of two actions and " $\e= 0.5$, what is
 the probability that the greedy action is selected?
 \end{exercise}
 \begin{solution}
 Write $G:=\{\text{greedy action is selected}\}$. We have
 \begin{align*}
 \Proba{\text{ G }}=&\Proba{\text{ G },random}+\Proba{\text{ G },optimal}    \\
-&=\epsilon\frac{1}{2}+(1-\epsilon)\\
+&=\e\frac{1}{2}+(1-\e)\\
 &=0.75.
 \end{align*}  
 \end{solution}
@@ -171,16 +179,16 @@ Timestep $t$ & $Q_{t+1}(1)$ & $Q_{t+1}(2)$    & $Q_{t+1}(3)$  & $Q_{t+1}(4)$ & G
 \hline 
 t=0&0&0&0&0&-&$A_{1}=1$\\
 \hline 
-t=1&$\frac{R_{1}}{1_{{A_1} = 1}}=-1$  & 0 &0&0&$2,3\tor 4$&$A_{2}=2$\\
+t=1&$\scriptstyle\frac{R_{1}}{1_{{A_1} = 1}}=-1$  & 0 &0&0&$2,3\tor 4$&$A_{2}=2$\\
 \hline 
 t=2& $-1$ &1&0&0&2&$A_{3}=2$\\
 \hline 
-t=3& -1& $\frac{R_{2}+R_{3}}{2}=-0.5$ &0&0&3\tor 4&$A_{4}=2$\\
+t=3& -1& $\scriptstyle\frac{R_{2}+R_{3}}{2}=-0.5$ &0&0&$3\tor 4$&$A_{4}=2$\\
 \hline 
-t=4& -1 &$\frac{R_{2}+R_{3}+R_{4}}{3}=\frac{1}{3}$&0  &0&3&$A_{5}=3$\\
+t=4& -1 &$\scriptstyle\frac{R_{2}+R_{3}+R_{4}}{3}=\frac{1}{3}$&0  &0&3&$A_{5}=3$\\
 \hline 
 t=5&-1&1/3&0&0&3&end\\
-\hline
+\hline\\
 \end{tabularx}
 
 \begin{enumerate}
@@ -192,7 +200,7 @@ t=5&-1&1/3&0&0&3&end\\
 
 \item action $A_{4}=2$ is exploration because the action 2 is not optimal.
 
-\item action $A_{5}=4$ is exploitation because action=$3$ is the only optimal choice.
+\item action $A_{5}=4$ could be either exploration or exploitation because action=$3$ is the only optimal choice.
     
 \end{enumerate}
 
@@ -239,13 +247,13 @@ We have
 Write $G:=\{\text{greedy action is selected}\}$. We have for $\e=0.01$
 \begin{align*}
 \Prob_{0.01}(\text{ G })=&\Prob(\text{ G },random)+\Prob(\text{ G },optimal)    \\
-&=\epsilon\frac{1}{k}+(1-\epsilon)\\
+&=\e\frac{1}{k}+(1-\e)\\
 &=0.01\frac{1}{10}+0.99=0.991
 \end{align*}  
 and similarly for $\e=0.1$
 \begin{align*}
 Prob_{0.1}(\text{ G })=&Prob(\text{ G },random)+Prob(\text{ G },optimal)    \\
-&=\epsilon\frac{1}{k}+(1-\epsilon)\\
+&=\e\frac{1}{k}+(1-\e)\\
 &=0.1\frac{1}{10}+0.9=0.91
 \end{align*}  
 So we see that the first probability is slightly higher than the second one.
@@ -260,11 +268,137 @@ So we see that the first probability is slightly higher than the second one.
 
 
 \begin{exercise}
+If the step-size parameters, $a_n$, are not constant, then the estimate $Q_n$ is a weighted average of previously received rewards with a weighting different from that given by (2.6). What is the weighting on each prior reward for the general case, analogous to (2.6), in terms of the sequence of step-size parameters?
+\end{exercise}
+\begin{solution}
+We start with 
+\begin{equation}
+Q_{n+1}=Q_{n}+\alpha_{n}(R_{n}-Q_{n})= \alpha_{n}R_{n} +(1-  \alpha_{n})Q_{n}
+\end{equation}
+and then we do the first two steps
+\begin{eqalign}
+Q_{n+1}=&\alpha_{n}R_{n} +(1-  \alpha_{n})Q_{n}\\
+=&\alpha_{n}R_{n}+(1-  \alpha_{n})\alpha_{n-1}R_{n-1} +(1-  \alpha_{n})(1-  \alpha_{n-1})Q_{n-1}\\
+=&\alpha_{n}R_{n}+(1-  \alpha_{n})\alpha_{n-1}R_{n-1} +(1-  \alpha_{n})(1-  \alpha_{n-1})\alpha_{n-2}R_{n-2}+(1-  \alpha_{n})(1-  \alpha_{n-1})(1-  \alpha_{n-2})Q_{n-2}.    
+\end{eqalign}
+So if we keep going, we get
+\begin{eqalign}\label{eq:formuladiffstepsizes}
+Q_{n+1}=\alpha_{n}R_{n}+\sum_{k=1}^{n-1}(\alpha_{k}\prod_{i=k+1}^{n}(1-\alpha_{i}) )R_{k}   +(\prod_{i=1}^{n}(1-\alpha_{i})) Q_{1}.
+\end{eqalign}
+
+
     
+\end{solution}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{exercise}
+Design and conduct an experiment to demonstrate the difficulties that sample-average methods have for nonstationary problems. Use a modified version of the 10-armed testbed in which all the $q_{\ast}(a)$ start out equal and then take independent random walks. Prepare plots like Figure 2.2 for an action-value method using sample averages, incrementally computed by $a = 1/n$ , and another $n$ action-value method using a constant step-size parameter, $a = 0.1$. Use $\e = 0.1$ and, if necessary, runs longer than 1000 steps.    
+\end{exercise}
+\begin{solution}
+
+
+
+
+    
+\end{solution}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{exercise}
+\textit{Mysterious Spikes:}The results shown in Figure 2.3 should be quite reliable because they are averages over 2000 individual, randomly chosen 10-armed bandit tasks. (a)Why, then, are there oscillations and spikes in the early part of the curve for the optimistic method? (b)In other words, what might make this method perform particularly better or worse, on average, on particular
+early steps?
+    
+\end{exercise}
+\begin{solution}
+\textbf{(a)}Initially in the optimistic-method all the rewards are at $Q_{1}(a)=+5$. However, since the mean is zero for $q_{*}(a)\sim N(0,1)$, this is an overshoot guess.
+\begin{enumerate}
+    \item  Therefore, once we explore any of the actions eg. $A_{1}=1$, the reward will likely be much less eg. $Q_{1}(1)=0.1\ll 5$. 
+    
+    \item So $a=1$ will \textbf{not} be a greedy action, and with at least probability $1-\epsilon$, it will be ignored. 
+
+    \item We will quickly go through all the actions, some of which will be the optimal ones and some of which will very low-reward. So we will oscillate between high and low rewards in the first few steps as we remove and update from the initial optimistic bias of $+5$.
+
+    \item Once the we update to more \textit{realistic} rewards, we are back to the original 10-armed bandit.
+    
+\end{enumerate}
+\textbf{(b)}If we have some idea of which are the optimal actions, we distribute the initial optimistic rewards accordingly and also closer to the actual mean zero.
+
+\tom{Any other ideas?}
+
+
+
+\end{solution}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{exercise}
+Unbiased Constant-Step-Size Trick In most of this chapter we have used sample averages to estimate action values because sample averages do not produce the initial bias that constant step sizes do (see the analysis leading to (2.6)). However, sample averages are not a completely satisfactory solution because they may perform poorly on nonstationary problems. Is it possible to avoid the bias of constant step sizes while retaining their advantages on nonstationary problems? One way is to use a step size of    
+\begin{equation}
+\beta_{n}=\frac{\alpha}{\bar{o}_{n}},    
+\end{equation}
+to process the nth reward for a particular action, where $\alpha>0$ is a conventional constant step size, and $\bar{o}_{n}$ is a trace of one that starts at 0:
+\begin{equation}\label{tracerecursion}
+\bar{o}_{n} = \bar{o}_{n-1} + \alpha(1 - \bar{o}_{n-1}), \text{ for }n > 0\tand \bar{o}_{0} = 0. 
+\end{equation}
+Carry out an analysis like that in (2.6) to show that $Q_n$ is an exponential recency-weighted average without initial bias.
+\end{exercise}
+\begin{solution}
+First we make some observations. Initially we see that $\bar{o}_{1}=\alpha$ and so $\beta_{1}=1$. And eventually by solving the recursion for the trace
+\begin{eqalign}
+\bar{o}_{n}&=\alpha+(1-\alpha)\bar{o}_{n-1}\\
+&=\alpha+(1-\alpha)(\alpha+(1-\alpha)\bar{o}_{n-2})\\
+&=\alpha+(1-\alpha)\alpha+(1-\alpha)^{2}\bar{o}_{n-2}\\
+&\vdots\\
+&=\alpha\sum_{k=0}^{n}(1-\alpha)^{k}+(1-\alpha)^{n}\bar{o}_{0}\\
+&=\alpha\frac{1-(1-\alpha)^{n+1}}{1-(1-\alpha)}+(1-\alpha)^{n}\cdot 0\\
+&=1-(1-\alpha)^{n+1},
+\end{eqalign}
+we see that $\bar{o}_{n}\uparrow 1$ and so $\beta_{n}\downarrow \alpha$. Returning to \eqref{eq:formuladiffstepsizes} we have
+\begin{eqalign}\label{eq:betaQn}
+Q_{n+1}=\beta_{n}R_{n}+\sum_{k=1}^{n-1}(\beta_{k}\prod_{i=k+1}^{n}(1-\beta_{i}) )R_{k}   +(\prod_{i=1}^{n}(1-\beta_{i})) Q_{1}.
+\end{eqalign}
+We will compute each of those terms using the recursion \eqref{tracerecursion}. We have
+\begin{eqalign}
+\prod_{i=k+1}^{n}(1-\beta_{i}) =& \prod_{i=k+1}^{n}\frac{1}{\bar{o}_{i}}(\bar{o}_{i}-\alpha)   \\
+ =& (1-\alpha)^{n-k-1}  \prod_{i=k+1}^{n}\frac{\bar{o}_{i-1} }{\bar{o}_{i}}\\
+ =&(1-\alpha)^{n-k-1}  \frac{\bar{o}_{k} }{\bar{o}_{n}},
+\end{eqalign}
+and 
+\begin{equation}
+\beta_{k}\prod_{i=k+1}^{n}(1-\beta_{i})=\frac{\alpha(1-\alpha)^{n-k-1}  }{\bar{o}_{n}}.   
+\end{equation}
+So 
+\begin{eqalign}\label{eq:betaQn2}
+\eqref{eq:betaQn}&=\frac{\alpha}{\bar{o}_{n}} R_{n}+\sum_{k=1}^{n-1}\frac{\alpha(1-\alpha)^{n-k-1}  }{\bar{o}_{n}}R_{k}   +(1-\alpha)^{n-1}  \frac{\bar{o}_{0} }{\bar{o}_{n}} Q_{1}\\
+&=\frac{\alpha}{\bar{o}_{n}} R_{n}+\sum_{k=1}^{n-1}\frac{\alpha(1-\alpha)^{n-k-1}  }{\bar{o}_{n}}R_{k}+0.
+\end{eqalign}
+Since $\bar{o}_{n}\to 1$, this is approximately 
+\begin{eqalign}
+\eqref{eq:betaQn2}\approx\alpha R_{n}+\sum_{k=1}^{n-1}\alpha(1-\alpha)^{n-k-1}  R_{k}.  
+\end{eqalign}
+So we get exponential recency and no dependence on $Q_{1}$ i.e. no initial bias.
+
+\end{solution}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{exercise}
+\textit{UCB Spikes} In Figure 2.4 the UCB algorithm shows a distinct spike in performance on the 11th step. Why is this? Note that for your answer to be fully satisfactory it must explain both why the reward increases on the 11th step and why it decreases on the subsequent steps. Hint: If $c = 1$, then the spike is less prominent.    
 \end{exercise}
 \begin{solution}
     
 \end{solution}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -278,6 +412,7 @@ So we see that the first probability is slightly higher than the second one.
 \end{solution}
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -287,6 +422,7 @@ So we see that the first probability is slightly higher than the second one.
 \begin{solution}
     
 \end{solution}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
